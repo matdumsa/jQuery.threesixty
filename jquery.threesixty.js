@@ -1,22 +1,23 @@
 /*!
- * jQuery.threesixty Image rotation plug-in for jQuery version 0.5
+ * jQuery.threesixty Image rotation plug-in for jQuery version 0.6
  * http://www.mathieusavard.info/threesixty/
  *
  * Copyright 2008-2010 Mathieu Dumais-Savard
  * Licensed under the MIT lice
  * http://www.opensource.org/licenses/mit-license.php
  * *
- * Date: Wed Sep 22 26:07:00 2010 -0500
+ * Date: Tue Aug 9
  */
 
 jQuery.fn.threesixty = function(options){
 	options = options || {};
 	options.images = options.images || [];
-	options.method = options.method || "click"
+	options.method = options.method || "click" //can be click, mouse move or auto
 	options.cycle = options.cycle || 1;
 	options.resetMargin = options.resetMargin || 0;
 	options.direction = options.direction || "forward";
 	options.sensibility = options.sensibility || options.cycle * 0.35;
+	options.autoscrollspeed = options.autoscrollspeed || 500;
 
 
 	if (options.direction == "backward")
@@ -160,6 +161,12 @@ jQuery.fn.threesixty = function(options){
 	 			pic.data("enabled","0");
 				pic.data("currentIndex",pic.data("tempIndex"));
 			});
+		}
+		
+		if (options.method == "auto") {
+			var speed = options.autoscrollspeed;
+			var newIndex=0;
+			window.setInterval(function() { pic.attr("src", imgArr[++newIndex % imgArr.length])} , speed);
 		}
 	});			
 };
