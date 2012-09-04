@@ -18,7 +18,7 @@ jQuery.fn.threesixty = function(options){
 	options.direction = options.direction || "forward";
 	options.sensibility = options.sensibility || options.cycle * 0.35;
 	options.autoscrollspeed = options.autoscrollspeed || 500;
-
+	options.displayImage = options.displayImage || -1; // Image index to start with
 
 	if (options.direction == "backward")
 		options.images.reverse();
@@ -59,11 +59,23 @@ jQuery.fn.threesixty = function(options){
 
 		$.each(options.images, function(index, record) {
 			var o =$("<img>").attr("src",record).load(function() {
-				if (index>pic.data("tempIndex"))
+			
+				// Check if a disired image to start with is defined
+				if ((options.displayImage > -1) && (index === options.displayImage))
 				{
-					pic.data("tempIndex", index)
-					pic.attr("src", $(this).attr("src"))
+					pic.attr("src", $(this).attr("src"))													
+				}
+				else if ((index>pic.data("tempIndex")) && (options.displayImage === -1))
+				{
+					pic.data("tempIndex", index) 
+					pic.attr("src", $(this).attr("src"))						
 				}	
+				else if (index>pic.data("tempIndex"))
+				{
+					pic.data("tempIndex", index);
+				}
+				
+
 
 				var progress = pic.parent().find(".progressBar");
 				totalProgress++;
