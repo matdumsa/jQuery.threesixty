@@ -140,7 +140,8 @@ jQuery.fn.threesixty = function(options){
 					if (newIndex == pic.data("currentIndex"))
 						return;
 					pic.attr("src",imgArr[newIndex]);
-					pic.data("tempIndex",newIndex);		
+					pic.data("tempIndex",newIndex);
+					pic.trigger('rotate', newIndex);
 				}
 				else {	//The image needs to be moved in its viewport..
 					moveInViewport(e);
@@ -164,9 +165,15 @@ jQuery.fn.threesixty = function(options){
 		}
 		
 		if (options.method == "auto") {
-			var speed = options.autoscrollspeed;
-			var newIndex=0;
-			window.setInterval(function() { pic.attr("src", imgArr[++newIndex % imgArr.length])} , speed);
+			var speed = options.autoscrollspeed,
+			    newIndex = 0;
+			window.setInterval(function () {
+			    
+                var indexRemainder = ++newIndex % imgArr.length;
+
+                pic.attr("src", imgArr[indexRemainder]);
+                pic.trigger('rotate', indexRemainder);	
+		    } , speed);
 		}
 	});			
 };
